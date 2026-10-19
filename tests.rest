@@ -1,0 +1,102 @@
+@baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlmcnMuZWR1LmJyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzkyMzg3NTY4LCJleHAiOjE3OTI0MTYzNjh9.OaQ7MNm7J9VB2TAiAYuM8cIjcW66RuHc0F4mZ0wqJ8I
+@volunteerToken = COLE_O_TOKEN_DO_VOLUNTARIO
+
+### Saúde da API
+GET {{baseUrl}}/health
+
+### Login - usuário fictício exigido pelo enunciado
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ifrs.edu.br",
+  "password": "123456"
+}
+
+### Login - voluntário
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "ana.souza@example.com",
+  "password": "123456"
+}
+
+### Dashboard protegido
+GET {{baseUrl}}/dashboard
+Authorization: Bearer {{token}}
+
+### Listar eventos
+GET {{baseUrl}}/events
+Authorization: Bearer {{token}}
+
+### Cadastrar evento - somente admin
+POST {{baseUrl}}/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Mutirão de recuperação ambiental",
+  "description": "Ação de limpeza e plantio em área comunitária.",
+  "event_date": "2026-12-12",
+  "location": "Parque Municipal",
+  "max_volunteers": 30,
+  "status": "active"
+}
+
+### Consultar evento
+GET {{baseUrl}}/events/1
+Authorization: Bearer {{token}}
+
+### Alterar evento - somente admin
+PUT {{baseUrl}}/events/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "active",
+  "max_volunteers": 45
+}
+
+### Listar voluntários
+GET {{baseUrl}}/volunteers
+Authorization: Bearer {{token}}
+
+### Cadastrar voluntário - somente admin
+POST {{baseUrl}}/volunteers
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Diego Oliveira",
+  "email": "diego.oliveira@example.com",
+  "phone": "(51) 99999-4444",
+  "password": "123456",
+  "status": "active"
+}
+
+### Inscrever voluntário em evento - respeita capacidade máxima
+POST {{baseUrl}}/events/1/volunteers/1
+Authorization: Bearer {{token}}
+
+### Voluntário autenticado se inscreve no evento
+POST {{baseUrl}}/events/1/register
+Authorization: Bearer {{volunteerToken}}
+
+### Voluntário autenticado cancela a própria inscrição
+DELETE {{baseUrl}}/events/1/register
+Authorization: Bearer {{volunteerToken}}
+
+### Listar inscritos no evento
+GET {{baseUrl}}/events/1/volunteers
+Authorization: Bearer {{token}}
+
+### Remover inscrição
+DELETE {{baseUrl}}/events/1/volunteers/1
+Authorization: Bearer {{token}}
+
+### Excluir voluntário - somente admin
+DELETE {{baseUrl}}/volunteers/4
+Authorization: Bearer {{token}}
+
