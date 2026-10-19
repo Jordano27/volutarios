@@ -45,11 +45,6 @@ export default function LoginPage() {
         <p className="intro-text">
           Organize eventos, conecte voluntários e acompanhe cada ação da comunidade em um só lugar.
         </p>
-        <div className="intro-decoration">
-          <span />
-          <span />
-          <span />
-        </div>
       </section>
       <section className="login-panel form-panel">
         <div className="form-heading">
