@@ -733,10 +733,6 @@ td strong {
   letter-spacing: -0.04em;
   margin: 0 0 9px;
 }
-.form-heading p:not(.eyebrow) {
-  color: #7b8c90;
-  margin-bottom: 32px;
-}
 .stack-form {
   display: grid;
   gap: 18px;

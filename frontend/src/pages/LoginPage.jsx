@@ -53,9 +53,7 @@ export default function LoginPage() {
       </section>
       <section className="login-panel form-panel">
         <div className="form-heading">
-          <p className="eyebrow">ACESSO RESTRITO</p>
           <h2>Bem-vindo de volta</h2>
-          <p>Entre para acompanhar as ações de voluntariado.</p>
         </div>
         <form onSubmit={handleSubmit} className="stack-form">
           <Feedback message={error} />
