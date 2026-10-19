@@ -77,11 +77,6 @@ export default function LoginPage() {
             {loading ? 'Entrando...' : 'Entrar no sistema'}
           </button>
         </form>
-        <div className="demo-hint">
-          <strong>Acesso de demonstração</strong>
-          <span>Admin: admin@ifrs.edu.br • 123456</span>
-          <span>Voluntária: ana.souza@example.com • 123456</span>
-        </div>
       </section>
     </main>
   );

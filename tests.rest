@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlmcnMuZWR1LmJyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzkyMzg3NTY4LCJleHAiOjE3OTI0MTYzNjh9.OaQ7MNm7J9VB2TAiAYuM8cIjcW66RuHc0F4mZ0wqJ8I
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGlmcnMuZWR1LmJyIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzkyNDQ1ODMxLCJleHAiOjE3OTI0NzQ2MzF9.NO9Q4Hh0Ec8YTKczrzcz_7-DugWt6IX9XwkeQyJvy2c
 @volunteerToken = COLE_O_TOKEN_DO_VOLUNTARIO
 
 ### Saúde da API
@@ -19,8 +19,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "ana.souza@example.com",
-  "password": "123456"
+  "email": "jordanopoletto@gmail.com",
+  "password": "48533125"
 }
 
 ### Dashboard protegido
@@ -88,6 +88,41 @@ Authorization: Bearer {{volunteerToken}}
 DELETE {{baseUrl}}/events/1/register
 Authorization: Bearer {{volunteerToken}}
 
+### Finalizar evento para testar bloqueio de inscrição
+PUT {{baseUrl}}/events/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "finished"
+}
+
+### Voluntário tenta se inscrever em evento finalizado - deve retornar 422
+POST {{baseUrl}}/events/2/register
+Authorization: Bearer {{volunteerToken}}
+
+### Cancelar evento para testar bloqueio de inscrição
+PUT {{baseUrl}}/events/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "cancelled"
+}
+
+### Voluntário tenta se inscrever em evento cancelado - deve retornar 422
+POST {{baseUrl}}/events/2/register
+Authorization: Bearer {{volunteerToken}}
+
+### Reativar evento após os testes de inscrição
+PUT {{baseUrl}}/events/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "active"
+}
+
 ### Listar inscritos no evento
 GET {{baseUrl}}/events/1/volunteers
 Authorization: Bearer {{token}}
@@ -100,3 +135,57 @@ Authorization: Bearer {{token}}
 DELETE {{baseUrl}}/volunteers/4
 Authorization: Bearer {{token}}
 
+### Acesso protegido sem token - deve retornar 401
+GET {{baseUrl}}/dashboard
+
+### Login com credenciais inválidas - deve retornar 401
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "nao-existe@example.com",
+  "password": "senha-invalida"
+}
+
+### Login com dados inválidos - deve retornar 422
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "email-invalido",
+  "password": "123"
+}
+
+### Evento com identificador inválido - deve retornar 400
+GET {{baseUrl}}/events/abc
+Authorization: Bearer {{token}}
+
+### Evento inexistente - deve retornar 404
+GET {{baseUrl}}/events/999999
+Authorization: Bearer {{token}}
+
+### Inscrição com perfil de administrador - deve retornar 403
+POST {{baseUrl}}/events/1/register
+Authorization: Bearer {{token}}
+
+### Cadastro de evento com dados inválidos - deve retornar 422
+POST {{baseUrl}}/events
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "a",
+  "description": "x",
+  "event_date": "data-invalida",
+  "location": "x",
+  "max_volunteers": 0,
+  "status": "status-invalido"
+}
+
+### Filtro de eventos inválido - deve retornar 422
+GET {{baseUrl}}/events?status=status-invalido
+Authorization: Bearer {{token}}
+
+### Perfil de voluntário com usuário administrador - deve retornar 403
+GET {{baseUrl}}/volunteers/me
+Authorization: Bearer {{token}}

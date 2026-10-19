@@ -1,7 +1,4 @@
-CREATE DATABASE IF NOT EXISTS voluntariado_ifrs
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
+CREATE DATABASE IF NOT EXISTS voluntariado_ifrs;
 USE voluntariado_ifrs;
 
 CREATE TABLE users (
@@ -12,7 +9,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE = InnoDB;
+);
 
 CREATE TABLE events (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -27,7 +24,7 @@ CREATE TABLE events (
   CONSTRAINT chk_events_max_volunteers CHECK (max_volunteers > 0),
   INDEX idx_events_date (event_date),
   INDEX idx_events_status (status)
-) ENGINE = InnoDB;
+);
 
 CREATE TABLE volunteers (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +37,7 @@ CREATE TABLE volunteers (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_volunteers_name (name),
   INDEX idx_volunteers_status (status)
-) ENGINE = InnoDB;
+);
 
 CREATE TABLE event_volunteers (
   event_id INT UNSIGNED NOT NULL,
@@ -51,4 +48,4 @@ CREATE TABLE event_volunteers (
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
   CONSTRAINT fk_event_volunteers_volunteer
     FOREIGN KEY (volunteer_id) REFERENCES volunteers(id) ON DELETE CASCADE
-) ENGINE = InnoDB;
+);
